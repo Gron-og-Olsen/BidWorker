@@ -9,3 +9,6 @@ namespace BidWorker
         public DateTime Timestamp { get; set; }
     }
 }
+
+
+ 

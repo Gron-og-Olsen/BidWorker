@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Charm\\BidWorker\\BidWorker.csproj": {}
+    "C:\\Users\\Amelia\\Desktop\\skole\\GrønOlsen\\BidWorker\\BidWorker.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Charm\\BidWorker\\BidWorker.csproj": {
+    "C:\\Users\\Amelia\\Desktop\\skole\\GrønOlsen\\BidWorker\\BidWorker.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Charm\\BidWorker\\BidWorker.csproj",
+        "projectUniqueName": "C:\\Users\\Amelia\\Desktop\\skole\\GrønOlsen\\BidWorker\\BidWorker.csproj",
         "projectName": "BidWorker",
-        "projectPath": "C:\\Users\\Charm\\BidWorker\\BidWorker.csproj",
-        "packagesPath": "C:\\Users\\Charm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Charm\\BidWorker\\obj\\",
+        "projectPath": "C:\\Users\\Amelia\\Desktop\\skole\\GrønOlsen\\BidWorker\\BidWorker.csproj",
+        "packagesPath": "C:\\Users\\Amelia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Amelia\\Desktop\\skole\\GrønOlsen\\BidWorker\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Charm\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Amelia\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -54,9 +53,25 @@
               "target": "Package",
               "version": "[9.0.0, )"
             },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.Extensions.Logging": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "RabbitMQ.Client": {
               "target": "Package",
-              "version": "[7.0.0, )"
+              "version": "[6.4.0, )"
             }
           },
           "imports": [
