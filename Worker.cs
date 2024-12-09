@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 
 namespace BidWorker
@@ -104,6 +104,14 @@ namespace BidWorker
                 return Bids.Where(b => b.AuctionId == auctionId).ToList();
             }
         }
-    }
 
+        // Hent et specifikt bud baseret på ID
+        public Bid GetBidById(int id)
+        {
+            lock (Bids)
+            {
+                return Bids.FirstOrDefault(b => b.Id == id);
+            }
+        }
+    }
 }
