@@ -22,7 +22,7 @@ namespace BidWorker
         public Worker(ILogger<Worker> logger, IConfiguration configuration)
         {
             _logger = logger;
-            _rabbitHost = configuration["RabbitHost"] ?? "localhost"; // Hent RabbitHost fra appsettings.json eller brug standard localhost
+            _rabbitHost = configuration["RabbitHost"] ?? "rabbitmq"; // Hent RabbitHost fra appsettings.json eller brug standard localhost
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

@@ -15,4 +15,4 @@ builder.ConfigureServices((hostContext, services) =>
 var app = builder.Build();
 
 // Start applikationen og kør worker-tjenesten
-await app.RunAsync();
+app.Run();

@@ -1,31 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Amelia\\Desktop\\skole\\GrønOlsen\\BidWorker\\BidWorker.csproj": {}
+    "/Users/Mel/4sem/GrønOgOlsen/BidWorker/BidWorker.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Amelia\\Desktop\\skole\\GrønOlsen\\BidWorker\\BidWorker.csproj": {
+    "/Users/Mel/4sem/GrønOgOlsen/BidWorker/BidWorker.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Amelia\\Desktop\\skole\\GrønOlsen\\BidWorker\\BidWorker.csproj",
+        "projectUniqueName": "/Users/Mel/4sem/GrønOgOlsen/BidWorker/BidWorker.csproj",
         "projectName": "BidWorker",
-        "projectPath": "C:\\Users\\Amelia\\Desktop\\skole\\GrønOlsen\\BidWorker\\BidWorker.csproj",
-        "packagesPath": "C:\\Users\\Amelia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Amelia\\Desktop\\skole\\GrønOlsen\\BidWorker\\obj\\",
+        "projectPath": "/Users/Mel/4sem/GrønOgOlsen/BidWorker/BidWorker.csproj",
+        "packagesPath": "/Users/Mel/.nuget/packages/",
+        "outputPath": "/Users/Mel/4sem/GrønOgOlsen/BidWorker/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Amelia\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/Mel/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -90,7 +85,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
