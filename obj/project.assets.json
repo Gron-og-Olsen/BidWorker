@@ -1093,68 +1093,6 @@
           }
         }
       },
-      "NLog/5.3.4": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/NLog.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/NLog.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "NLog.Extensions.Logging/5.3.15": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Logging": "8.0.0",
-          "NLog": "5.3.4"
-        },
-        "compile": {
-          "lib/net8.0/NLog.Extensions.Logging.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/NLog.Extensions.Logging.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "NLog.Targets.Loki/2.2.0": {
-        "type": "package",
-        "dependencies": {
-          "NLog": "5.2.8"
-        },
-        "compile": {
-          "lib/net8.0/NLog.Loki.dll": {}
-        },
-        "runtime": {
-          "lib/net8.0/NLog.Loki.dll": {}
-        }
-      },
-      "NLog.Web.AspNetCore/5.3.15": {
-        "type": "package",
-        "dependencies": {
-          "NLog.Extensions.Logging": "5.3.15"
-        },
-        "compile": {
-          "lib/net8.0/NLog.Web.AspNetCore.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/NLog.Web.AspNetCore.dll": {
-            "related": ".xml"
-          }
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
-      },
       "RabbitMQ.Client/6.4.0": {
         "type": "package",
         "dependencies": {
@@ -3235,99 +3173,6 @@
         "packageIcon.png"
       ]
     },
-    "NLog/5.3.4": {
-      "sha512": "gLy7+O1hEYJXIlcTr1/VWjGXrZTQFZzYNO18IWasD64pNwz0BreV+nHLxWKXWZzERRzoKnsk2XYtwLkTVk7J1A==",
-      "type": "package",
-      "path": "nlog/5.3.4",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "N.png",
-        "lib/net35/NLog.dll",
-        "lib/net35/NLog.xml",
-        "lib/net45/NLog.dll",
-        "lib/net45/NLog.xml",
-        "lib/net46/NLog.dll",
-        "lib/net46/NLog.xml",
-        "lib/netstandard1.3/NLog.dll",
-        "lib/netstandard1.3/NLog.xml",
-        "lib/netstandard1.5/NLog.dll",
-        "lib/netstandard1.5/NLog.xml",
-        "lib/netstandard2.0/NLog.dll",
-        "lib/netstandard2.0/NLog.xml",
-        "nlog.5.3.4.nupkg.sha512",
-        "nlog.nuspec"
-      ]
-    },
-    "NLog.Extensions.Logging/5.3.15": {
-      "sha512": "BSCkfWjaTesw4/k8Ujj3YdqtDzd2iCRYIOwoHume7aaJFz4/gLbemA5MLgkAwtCxcd8nGBGfaEkeIzQPGxArLg==",
-      "type": "package",
-      "path": "nlog.extensions.logging/5.3.15",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "N.png",
-        "README.md",
-        "lib/net461/NLog.Extensions.Logging.dll",
-        "lib/net461/NLog.Extensions.Logging.xml",
-        "lib/net6.0/NLog.Extensions.Logging.dll",
-        "lib/net6.0/NLog.Extensions.Logging.xml",
-        "lib/net8.0/NLog.Extensions.Logging.dll",
-        "lib/net8.0/NLog.Extensions.Logging.xml",
-        "lib/netstandard1.3/NLog.Extensions.Logging.dll",
-        "lib/netstandard1.3/NLog.Extensions.Logging.xml",
-        "lib/netstandard1.5/NLog.Extensions.Logging.dll",
-        "lib/netstandard1.5/NLog.Extensions.Logging.xml",
-        "lib/netstandard2.0/NLog.Extensions.Logging.dll",
-        "lib/netstandard2.0/NLog.Extensions.Logging.xml",
-        "lib/netstandard2.1/NLog.Extensions.Logging.dll",
-        "lib/netstandard2.1/NLog.Extensions.Logging.xml",
-        "nlog.extensions.logging.5.3.15.nupkg.sha512",
-        "nlog.extensions.logging.nuspec"
-      ]
-    },
-    "NLog.Targets.Loki/2.2.0": {
-      "sha512": "GpVrKS+xFf42G6gvXwAy4pQuPVZYQhGuGqev0B7TK0WO1ttmKzgKUHt7JxxWrbA7rP93aou5PX3hSZB4TFC5hg==",
-      "type": "package",
-      "path": "nlog.targets.loki/2.2.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE",
-        "README.md",
-        "lib/net6.0/NLog.Loki.dll",
-        "lib/net7.0/NLog.Loki.dll",
-        "lib/net8.0/NLog.Loki.dll",
-        "lib/netstandard2.0/NLog.Loki.dll",
-        "nlog.targets.loki.2.2.0.nupkg.sha512",
-        "nlog.targets.loki.nuspec"
-      ]
-    },
-    "NLog.Web.AspNetCore/5.3.15": {
-      "sha512": "Am5ZJ1htYf6K3QJ7stIbKK3CTGw1BOyGtucWxHoDScM/U1w6nE/zmYfZTfj7jRIKuZwbwpBqtRGZJsUcMGUvfA==",
-      "type": "package",
-      "path": "nlog.web.aspnetcore/5.3.15",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "N.png",
-        "README.md",
-        "lib/net461/NLog.Web.AspNetCore.dll",
-        "lib/net461/NLog.Web.AspNetCore.xml",
-        "lib/net5.0/NLog.Web.AspNetCore.dll",
-        "lib/net5.0/NLog.Web.AspNetCore.xml",
-        "lib/net6.0/NLog.Web.AspNetCore.dll",
-        "lib/net6.0/NLog.Web.AspNetCore.xml",
-        "lib/net8.0/NLog.Web.AspNetCore.dll",
-        "lib/net8.0/NLog.Web.AspNetCore.xml",
-        "lib/netcoreapp3.1/NLog.Web.AspNetCore.dll",
-        "lib/netcoreapp3.1/NLog.Web.AspNetCore.xml",
-        "lib/netstandard2.0/NLog.Web.AspNetCore.dll",
-        "lib/netstandard2.0/NLog.Web.AspNetCore.xml",
-        "nlog.web.aspnetcore.5.3.15.nupkg.sha512",
-        "nlog.web.aspnetcore.nuspec"
-      ]
-    },
     "RabbitMQ.Client/6.4.0": {
       "sha512": "1znR1gGU+xYVSpO5z8nQolcUKA/yydnxQn7Ug9+RUXxTSLMm/eE58VKGwahPBjELXvDnX0k/kBrAitFLRjx9LA==",
       "type": "package",
@@ -4430,10 +4275,6 @@
       "Microsoft.Extensions.Hosting >= 9.0.0",
       "Microsoft.Extensions.Logging >= 9.0.0",
       "MongoDB.Driver >= 3.1.0",
-      "NLog >= 5.3.4",
-      "NLog.Extensions.Logging >= 5.3.15",
-      "NLog.Targets.Loki >= 2.2.0",
-      "NLog.Web.AspNetCore >= 5.3.15",
       "RabbitMQ.Client >= 6.4.0"
     ]
   },
@@ -4503,22 +4344,6 @@
           "MongoDB.Driver": {
             "target": "Package",
             "version": "[3.1.0, )"
-          },
-          "NLog": {
-            "target": "Package",
-            "version": "[5.3.4, )"
-          },
-          "NLog.Extensions.Logging": {
-            "target": "Package",
-            "version": "[5.3.15, )"
-          },
-          "NLog.Targets.Loki": {
-            "target": "Package",
-            "version": "[2.2.0, )"
-          },
-          "NLog.Web.AspNetCore": {
-            "target": "Package",
-            "version": "[5.3.15, )"
           },
           "RabbitMQ.Client": {
             "target": "Package",

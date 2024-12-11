@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "UGro5QhOZ6t+LfBkwHHzZtGsNLqy2S+giHBUntTgiuNM/oVPg6lxT/a5g5pqakwi0ejB1MEasv+jwfBEzBYXPg==",
+  "dgSpecHash": "pMM1rhmTwFnwctegq7vdHfsHPQ1KB/YKgdbnJ8vSkQPx/kJ6hW2YOCo9527nbH0iozTMayT2w+/CZx3HeP1n8w==",
   "success": true,
   "projectFilePath": "/Users/Mel/4sem/GrønOgOlsen/BidWorker/BidWorker.csproj",
   "expectedPackageFiles": [
@@ -60,10 +60,6 @@
     "/Users/Mel/.nuget/packages/microsoft.win32.systemevents/6.0.0/microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "/Users/Mel/.nuget/packages/mongodb.bson/3.1.0/mongodb.bson.3.1.0.nupkg.sha512",
     "/Users/Mel/.nuget/packages/mongodb.driver/3.1.0/mongodb.driver.3.1.0.nupkg.sha512",
-    "/Users/Mel/.nuget/packages/nlog/5.3.4/nlog.5.3.4.nupkg.sha512",
-    "/Users/Mel/.nuget/packages/nlog.extensions.logging/5.3.15/nlog.extensions.logging.5.3.15.nupkg.sha512",
-    "/Users/Mel/.nuget/packages/nlog.targets.loki/2.2.0/nlog.targets.loki.2.2.0.nupkg.sha512",
-    "/Users/Mel/.nuget/packages/nlog.web.aspnetcore/5.3.15/nlog.web.aspnetcore.5.3.15.nupkg.sha512",
     "/Users/Mel/.nuget/packages/rabbitmq.client/6.4.0/rabbitmq.client.6.4.0.nupkg.sha512",
     "/Users/Mel/.nuget/packages/sharpcompress/0.30.1/sharpcompress.0.30.1.nupkg.sha512",
     "/Users/Mel/.nuget/packages/snappier/1.0.0/snappier.1.0.0.nupkg.sha512",

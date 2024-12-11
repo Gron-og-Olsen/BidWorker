@@ -4,20 +4,8 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using RabbitMQ.Client;
 using BidWorker;
-using NLog;
-using NLog.Web;
-using NLog.Extensions.Logging; // Tilføj denne reference til NLog.Extensions.Logging
 
 var builder = Host.CreateDefaultBuilder(args);
-
-// Konfigurer NLog
-builder.ConfigureLogging((context, logging) =>
-{
-    // Brug NLog som logger
-    logging.ClearProviders();
-    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace); // Logniveauet, du ønsker
-    logging.AddNLog(); // Brug NLog
-});
 
 // Konfigurer service container og baggrundstjenester
 builder.ConfigureServices((hostContext, services) =>
@@ -28,6 +16,7 @@ builder.ConfigureServices((hostContext, services) =>
     // Konfigurer MongoDB-forbindelsen
     var mongoConnectionString = "mongodb+srv://Admin:Password@auktionshuscluster.koi2w.mongodb.net/";
     var mongoDatabaseName = "BidDB"; // Din faste database
+    
 
     // Opret MongoDB-klient og database
     var mongoClient = new MongoClient(mongoConnectionString);
@@ -49,7 +38,6 @@ builder.ConfigureServices((hostContext, services) =>
     services.AddHostedService<Worker>();
 });
 
-// Byg og start applikationen
 var app = builder.Build();
 
 // Start applikationen og kør worker-tjenesten
