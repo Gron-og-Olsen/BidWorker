@@ -11,6 +11,8 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using System;
+using NLog;
+using NLog.Web;
 
 namespace BidWorker
 {
@@ -39,11 +41,13 @@ namespace BidWorker
                                  exclusive: false, // Køen er tilgængelig for andre forbindelser
                                  autoDelete: false,  // Køen slettes ikke, når den ikke bruges
                                  arguments: null);
+
+            _logger.LogInformation($"Worker initialized and connected to RabbitMQ at {_rabbitHost}");
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation($"Connecting to RabbitMQ at {_rabbitHost}");
+            _logger.LogInformation($"Worker started at {DateTime.UtcNow}");
 
             var consumer = new EventingBasicConsumer(_channel);
 
@@ -80,6 +84,8 @@ namespace BidWorker
             {
                 await Task.Delay(1000, stoppingToken);
             }
+
+            _logger.LogInformation($"Worker stopped at {DateTime.UtcNow}");
         }
 
         // Tilføj et bud til listen i hukommelsen
@@ -90,6 +96,7 @@ namespace BidWorker
                 bid.Id = Guid.NewGuid();  // Brug Guid.NewGuid() til at generere et unikt ID
                 bid.Timestamp = DateTime.UtcNow;
                 Bids.Add(bid);  // Tilføj til den in-memory liste
+                _logger.LogInformation($"Bid added to in-memory list: {bid.BidderName}, AuctionId: {bid.AuctionId}");
             }
         }
 
@@ -98,17 +105,20 @@ namespace BidWorker
         {
             bid.Timestamp = DateTime.UtcNow;
             await _bidCollection.InsertOneAsync(bid);
+            _logger.LogInformation($"Bid saved to MongoDB: {bid.BidderName}, AuctionId: {bid.AuctionId}");
         }
 
         // Asynkron metode til at hente alle bud fra MongoDB
         public async Task<List<Bid>> GetAllBidsAsync()
         {
+            _logger.LogInformation("Fetching all bids from MongoDB.");
             return await _bidCollection.Find(Builders<Bid>.Filter.Empty).ToListAsync();
         }
 
         // Asynkron metode til at hente bud baseret på auktionens ID
         public async Task<List<Bid>> GetBidsByAuctionIdAsync(Guid auctionId)
         {
+            _logger.LogInformation($"Fetching bids for AuctionId: {auctionId} from MongoDB.");
             var filter = Builders<Bid>.Filter.Eq(b => b.AuctionId, auctionId);
             return await _bidCollection.Find(filter).ToListAsync();
         }
@@ -116,6 +126,7 @@ namespace BidWorker
         // Asynkron metode til at hente et specifikt bud baseret på ID
         public async Task<Bid> GetBidByIdAsync(Guid id)
         {
+            _logger.LogInformation($"Fetching bid with Id: {id} from MongoDB.");
             var filter = Builders<Bid>.Filter.Eq(b => b.Id, id);
             return await _bidCollection.Find(filter).FirstOrDefaultAsync();
         }
@@ -123,6 +134,7 @@ namespace BidWorker
         // Asynkron metode til at slette bud baseret på ID
         public async Task DeleteBidByIdAsync(Guid id)
         {
+            _logger.LogInformation($"Deleting bid with Id: {id} from MongoDB.");
             var filter = Builders<Bid>.Filter.Eq(b => b.Id, id);
             await _bidCollection.DeleteOneAsync(filter);
         }
@@ -132,27 +144,29 @@ namespace BidWorker
         {
             lock (Bids)
             {
+                _logger.LogInformation("Fetching all bids from in-memory list.");
                 return new List<Bid>(Bids);
             }
         }
 
-      // Hent bud baseret på auktionens ID fra hukommelsen
-public List<Bid> GetBidsByAuctionId(Guid auctionId)
-{
-    lock (Bids)
-    {
-        return Bids.Where(b => b.AuctionId.Equals(auctionId)).ToList();  // Brug Equals i stedet for ==
-    }
-}
+        // Hent bud baseret på auktionens ID fra hukommelsen
+        public List<Bid> GetBidsByAuctionId(Guid auctionId)
+        {
+            lock (Bids)
+            {
+                _logger.LogInformation($"Fetching bids for AuctionId: {auctionId} from in-memory list.");
+                return Bids.Where(b => b.AuctionId.Equals(auctionId)).ToList();  // Brug Equals i stedet for ==
+            }
+        }
 
-// Hent et specifikt bud baseret på ID fra hukommelsen
-public Bid GetBidById(Guid id)
-{
-    lock (Bids)
-    {
-        return Bids.FirstOrDefault(b => b.Id.Equals(id));  // Brug Equals i stedet for ==
-    }
-}
-
+        // Hent et specifikt bud baseret på ID fra hukommelsen
+        public Bid GetBidById(Guid id)
+        {
+            lock (Bids)
+            {
+                _logger.LogInformation($"Fetching bid with Id: {id} from in-memory list.");
+                return Bids.FirstOrDefault(b => b.Id.Equals(id));  // Brug Equals i stedet for ==
+            }
+        }
     }
 }
