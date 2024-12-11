@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
+using System;
 
 namespace BidWorker
 {
@@ -18,61 +20,65 @@ namespace BidWorker
         private readonly string _rabbitHost;
         private readonly string _queueName = "bidsQueue"; // Køen, der modtager budbeskeder
         private static List<Bid> Bids = new List<Bid>(); // Simuleret lagring af bud i hukommelsen
+        private readonly IMongoCollection<Bid> _bidCollection;
+        private readonly IModel _channel;
 
-        public Worker(ILogger<Worker> logger, IConfiguration configuration)
+        public Worker(ILogger<Worker> logger, IConfiguration configuration, IMongoDatabase mongoDatabase, ConnectionFactory rabbitConnectionFactory)
         {
             _logger = logger;
             _rabbitHost = configuration["RabbitHost"] ?? "rabbitmq"; // Hent RabbitHost fra appsettings.json eller brug standard localhost
+            _bidCollection = mongoDatabase.GetCollection<Bid>("BidCollection"); // Tilslut til den rigtige samling i MongoDB
+
+            // Opret forbindelse til RabbitMQ
+            var connection = rabbitConnectionFactory.CreateConnection();
+            _channel = connection.CreateModel();
+
+            // Deklarer køen, hvis den ikke allerede eksisterer
+            _channel.QueueDeclare(queue: _queueName,
+                                 durable: false,  // Køen vil ikke overleve server genstart
+                                 exclusive: false, // Køen er tilgængelig for andre forbindelser
+                                 autoDelete: false,  // Køen slettes ikke, når den ikke bruges
+                                 arguments: null);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation($"Connecting to RabbitMQ at {_rabbitHost}");
-            var factory = new ConnectionFactory() { HostName = _rabbitHost };
 
-            // Opret forbindelse til RabbitMQ og kanal
-            using (var connection = factory.CreateConnection())
-            using (var channel = connection.CreateModel())
+            var consumer = new EventingBasicConsumer(_channel);
+
+            // Når en besked modtages, behandles den her
+            consumer.Received += async (model, ea) =>
             {
-                // Deklarer køen, hvis den ikke allerede eksisterer
-                channel.QueueDeclare(queue: _queueName,
-                                     durable: false,  // Køen vil ikke overleve server genstart
-                                     exclusive: false, // Køen er tilgængelig for andre forbindelser
-                                     autoDelete: false,  // Køen slettes ikke, når den ikke bruges
-                                     arguments: null);
+                var body = ea.Body.ToArray();
+                var message = Encoding.UTF8.GetString(body);
 
-                var consumer = new EventingBasicConsumer(channel);
+                // Deserialiser buddet fra JSON
+                var bid = JsonSerializer.Deserialize<Bid>(message);
 
-                // Når en besked modtages, behandles den her
-                consumer.Received += (model, ea) =>
+                if (bid != null)
                 {
-                    var body = ea.Body.ToArray();
-                    var message = Encoding.UTF8.GetString(body);
+                    // Tilføj buddet til listen (i hukommelsen)
+                    AddBid(bid);
+                    _logger.LogInformation($"Received bid: {bid.BidderName}, AuctionId: {bid.AuctionId}, Amount: {bid.Amount}");
 
-                    // Deserialiser buddet fra JSON
-                    var bid = JsonSerializer.Deserialize<Bid>(message);
-
-                    if (bid != null)
-                    {
-                        // Tilføj buddet til listen (i hukommelsen)
-                        AddBid(bid);
-                        _logger.LogInformation($"Received bid: {bid.BidderName}, AuctionId: {bid.AuctionId}, Amount: {bid.Amount}");
-                    }
-                    else
-                    {
-                        // Hvis buddet ikke er gyldigt
-                        _logger.LogWarning("Invalid bid message received.");
-                    }
-                };
-
-                // Begynd at lytte på køen, auto-acknowledge (bekræftelse) sker automatisk
-                channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
-
-                // Kør, indtil applikationen stoppes
-                while (!stoppingToken.IsCancellationRequested)
-                {
-                    await Task.Delay(1000, stoppingToken);
+                    // Muligvis gemme bud i MongoDB også, hvis ønsket
+                    await AddBidAsync(bid);
                 }
+                else
+                {
+                    // Hvis buddet ikke er gyldigt
+                    _logger.LogWarning("Invalid bid message received.");
+                }
+            };
+
+            // Begynd at lytte på køen, auto-acknowledge (bekræftelse) sker automatisk
+            _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
+
+            // Kør, indtil applikationen stoppes
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                await Task.Delay(1000, stoppingToken);
             }
         }
 
@@ -81,13 +87,47 @@ namespace BidWorker
         {
             lock (Bids)
             {
-                bid.Id = Bids.Count + 1;  // Simpel måde at give buddet et ID
+                bid.Id = Guid.NewGuid();  // Brug Guid.NewGuid() til at generere et unikt ID
                 bid.Timestamp = DateTime.UtcNow;
                 Bids.Add(bid);  // Tilføj til den in-memory liste
             }
         }
 
-        // Metoder til at hente alle bud
+        // Asynkron metode til at tilføje bud til MongoDB
+        private async Task AddBidAsync(Bid bid)
+        {
+            bid.Timestamp = DateTime.UtcNow;
+            await _bidCollection.InsertOneAsync(bid);
+        }
+
+        // Asynkron metode til at hente alle bud fra MongoDB
+        public async Task<List<Bid>> GetAllBidsAsync()
+        {
+            return await _bidCollection.Find(Builders<Bid>.Filter.Empty).ToListAsync();
+        }
+
+        // Asynkron metode til at hente bud baseret på auktionens ID
+        public async Task<List<Bid>> GetBidsByAuctionIdAsync(Guid auctionId)
+        {
+            var filter = Builders<Bid>.Filter.Eq(b => b.AuctionId, auctionId);
+            return await _bidCollection.Find(filter).ToListAsync();
+        }
+
+        // Asynkron metode til at hente et specifikt bud baseret på ID
+        public async Task<Bid> GetBidByIdAsync(Guid id)
+        {
+            var filter = Builders<Bid>.Filter.Eq(b => b.Id, id);
+            return await _bidCollection.Find(filter).FirstOrDefaultAsync();
+        }
+
+        // Asynkron metode til at slette bud baseret på ID
+        public async Task DeleteBidByIdAsync(Guid id)
+        {
+            var filter = Builders<Bid>.Filter.Eq(b => b.Id, id);
+            await _bidCollection.DeleteOneAsync(filter);
+        }
+
+        // Metoder til at hente alle bud fra hukommelsen
         public List<Bid> GetAllBids()
         {
             lock (Bids)
@@ -96,22 +136,23 @@ namespace BidWorker
             }
         }
 
-        // Hent bud baseret på auktionens ID
-        public List<Bid> GetBidsByAuctionId(int auctionId)
-        {
-            lock (Bids)
-            {
-                return Bids.Where(b => b.AuctionId == auctionId).ToList();
-            }
-        }
+      // Hent bud baseret på auktionens ID fra hukommelsen
+public List<Bid> GetBidsByAuctionId(Guid auctionId)
+{
+    lock (Bids)
+    {
+        return Bids.Where(b => b.AuctionId.Equals(auctionId)).ToList();  // Brug Equals i stedet for ==
+    }
+}
 
-        // Hent et specifikt bud baseret på ID
-        public Bid GetBidById(int id)
-        {
-            lock (Bids)
-            {
-                return Bids.FirstOrDefault(b => b.Id == id);
-            }
-        }
+// Hent et specifikt bud baseret på ID fra hukommelsen
+public Bid GetBidById(Guid id)
+{
+    lock (Bids)
+    {
+        return Bids.FirstOrDefault(b => b.Id.Equals(id));  // Brug Equals i stedet for ==
+    }
+}
+
     }
 }
