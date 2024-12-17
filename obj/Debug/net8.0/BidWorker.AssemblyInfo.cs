@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BidWorker")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5beed97e130715a85d89536fca1ff2e446b0e94b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+663cdc9c28fb3911a38e288c9ccc10d1c679d277")]
 [assembly: System.Reflection.AssemblyProductAttribute("BidWorker")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BidWorker")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

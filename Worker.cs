@@ -27,8 +27,9 @@ namespace BidWorker
         {
             _logger = logger;
             _rabbitHost = configuration["RabbitHost"] ?? "rabbitmq"; // Hent RabbitHost fra appsettings.json eller brug standard localhost
-            _bidCollection = mongoDatabase.GetCollection<Bid>("BidCollection"); // Tilslut til den rigtige samling i MongoDB
-
+            // Hent MongoDB collection
+            var collectionName = configuration["BidCollectionName"] ?? "BidCollection";
+            _bidCollection = mongoDatabase.GetCollection<Bid>(collectionName);
             // Opret forbindelse til RabbitMQ
             var connection = rabbitConnectionFactory.CreateConnection();
             _channel = connection.CreateModel();
@@ -60,7 +61,7 @@ namespace BidWorker
                 {
                     // Tilføj buddet til listen (i hukommelsen)
                     AddBid(bid);
-                    _logger.LogInformation($"Received bid: {bid.BidderName}, AuctionId: {bid.AuctionId}, Amount: {bid.Amount}");
+                    _logger.LogInformation($"Received bid from rabbit: {bid.UserId}, AuctionId: {bid.AuctionId}, Amount: {bid.Value}");
 
                     // Muligvis gemme bud i MongoDB også, hvis ønsket
                     await AddBidAsync(bid);
@@ -87,8 +88,6 @@ namespace BidWorker
         {
             lock (Bids)
             {
-                bid.Id = Guid.NewGuid();  // Brug Guid.NewGuid() til at generere et unikt ID
-                bid.Timestamp = DateTime.UtcNow;
                 Bids.Add(bid);  // Tilføj til den in-memory liste
             }
         }
@@ -96,7 +95,6 @@ namespace BidWorker
         // Asynkron metode til at tilføje bud til MongoDB
         private async Task AddBidAsync(Bid bid)
         {
-            bid.Timestamp = DateTime.UtcNow;
             await _bidCollection.InsertOneAsync(bid);
         }
 
@@ -116,14 +114,14 @@ namespace BidWorker
         // Asynkron metode til at hente et specifikt bud baseret på ID
         public async Task<Bid> GetBidByIdAsync(Guid id)
         {
-            var filter = Builders<Bid>.Filter.Eq(b => b.Id, id);
+            var filter = Builders<Bid>.Filter.Eq(b => b.BidId, id);
             return await _bidCollection.Find(filter).FirstOrDefaultAsync();
         }
 
         // Asynkron metode til at slette bud baseret på ID
         public async Task DeleteBidByIdAsync(Guid id)
         {
-            var filter = Builders<Bid>.Filter.Eq(b => b.Id, id);
+            var filter = Builders<Bid>.Filter.Eq(b => b.BidId, id);
             await _bidCollection.DeleteOneAsync(filter);
         }
 
@@ -150,7 +148,7 @@ public Bid GetBidById(Guid id)
 {
     lock (Bids)
     {
-        return Bids.FirstOrDefault(b => b.Id.Equals(id));  // Brug Equals i stedet for ==
+        return Bids.FirstOrDefault(b => b.BidId.Equals(id));  // Brug Equals i stedet for ==
     }
 }
 

@@ -13,22 +13,36 @@ builder.ConfigureServices((hostContext, services) =>
     // Oprindelig konfiguration
     var configuration = hostContext.Configuration;
 
-    // Konfigurer MongoDB-forbindelsen
-    var mongoConnectionString = "mongodb+srv://Admin:Password@auktionshuscluster.koi2w.mongodb.net/";
-    var mongoDatabaseName = "BidDB"; // Din faste database
-    
+    // Hent MongoDB connection string og database navn fra miljøvariabler
+    var mongoConnectionString = configuration["MONGO_CONNECTION_STRING"];
+    var mongoDatabaseName = configuration["BidDatabaseName"];
+    var mongoCollectionName = configuration["BidCollectionName"];
+
+    if (string.IsNullOrEmpty(mongoConnectionString) || string.IsNullOrEmpty(mongoDatabaseName))
+    {
+        throw new Exception("MongoDB connection string or database name is not set in the environment variables.");
+    }
+
 
     // Opret MongoDB-klient og database
     var mongoClient = new MongoClient(mongoConnectionString);
     var database = mongoClient.GetDatabase(mongoDatabaseName);
 
+    // Hent collection fra databasen
+    var collection = database.GetCollection<Bid>(mongoCollectionName);
+
     // Registrer MongoDB-database som singleton
     services.AddSingleton(database);
 
-    // Konfigurer RabbitMQ-forbindelsen
+    services.AddSingleton(collection);
+
+
+    // RabbitMQ hostname fra miljøvariabel
+    var rabbitHostName = configuration["RabbitHost"] ?? "localhost";
+
     var rabbitConnectionFactory = new ConnectionFactory
     {
-        HostName = "rabbitmq"  // Hardkode RabbitMQ hostname
+        HostName = rabbitHostName
     };
 
     // Registrer RabbitMQ-forbindelse som singleton

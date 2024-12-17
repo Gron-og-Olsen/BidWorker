@@ -1,26 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/Users/Mel/4sem/GrønOgOlsen/BidWorker/BidWorker.csproj": {}
+    "C:\\Users\\cbjoe\\OneDrive\\Desktop\\Sem4\\Grøn_Olsen\\bid\\BidWorker\\BidWorker.csproj": {}
   },
   "projects": {
-    "/Users/Mel/4sem/GrønOgOlsen/BidWorker/BidWorker.csproj": {
+    "C:\\Users\\cbjoe\\OneDrive\\Desktop\\Sem4\\Grøn_Olsen\\bid\\BidWorker\\BidWorker.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/Mel/4sem/GrønOgOlsen/BidWorker/BidWorker.csproj",
+        "projectUniqueName": "C:\\Users\\cbjoe\\OneDrive\\Desktop\\Sem4\\Grøn_Olsen\\bid\\BidWorker\\BidWorker.csproj",
         "projectName": "BidWorker",
-        "projectPath": "/Users/Mel/4sem/GrønOgOlsen/BidWorker/BidWorker.csproj",
-        "packagesPath": "/Users/Mel/.nuget/packages/",
-        "outputPath": "/Users/Mel/4sem/GrønOgOlsen/BidWorker/obj/",
+        "projectPath": "C:\\Users\\cbjoe\\OneDrive\\Desktop\\Sem4\\Grøn_Olsen\\bid\\BidWorker\\BidWorker.csproj",
+        "packagesPath": "C:\\Users\\cbjoe\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\cbjoe\\OneDrive\\Desktop\\Sem4\\Grøn_Olsen\\bid\\BidWorker\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/Mel/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\cbjoe\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -89,7 +90,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

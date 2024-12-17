@@ -1,12 +1,23 @@
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace BidWorker
 {
    public class Bid
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        [BsonId]
+        [BsonRepresentation(MongoDB.Bson.BsonType.String)]
+        public Guid BidId { get; set; }
+
+        [BsonRepresentation(BsonType.String)]
         public Guid AuctionId { get; set; }
-        public string BidderName { get; set; }
-        public double Amount { get; set; }
-        public DateTime Timestamp { get; set; }
+
+        [BsonRepresentation(BsonType.String)]
+        public string UserId { get; set; }
+        public decimal Value { get; set; }
+        public DateTime DateTime { get; set; }
+        public string Status { get; set; }
+
     }
 }
 
