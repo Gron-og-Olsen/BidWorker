@@ -26,7 +26,7 @@ namespace BidWorker
         public Worker(ILogger<Worker> logger, IConfiguration configuration, IMongoDatabase mongoDatabase, ConnectionFactory rabbitConnectionFactory)
         {
             _logger = logger;
-            _rabbitHost = configuration["RabbitHost"] ?? "rabbitmq"; // Hent RabbitHost fra appsettings.json eller brug standard localhost
+            _rabbitHost = configuration["RabbitHost"]; 
             // Hent MongoDB collection
             var collectionName = configuration["BidCollectionName"] ?? "BidCollection";
             _bidCollection = mongoDatabase.GetCollection<Bid>(collectionName);

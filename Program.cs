@@ -38,7 +38,7 @@ builder.ConfigureServices((hostContext, services) =>
 
 
     // RabbitMQ hostname fra miljøvariabel
-    var rabbitHostName = configuration["RabbitHost"] ?? "localhost";
+    var rabbitHostName = configuration["RabbitHost"];
 
     var rabbitConnectionFactory = new ConnectionFactory
     {
